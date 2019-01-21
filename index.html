@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>arcane.services</title>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" href="files/favicon.png"/>
+  <style>
+    body {
+      margin: 0px;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: white;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      position: absolute;
+      visibility: hidden;
+      mix-blend-mode: difference;
+    }
+
+    @media (max-aspect-ratio: 17/22) {
+      img {
+        width: auto;
+        height: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+</body>
+
+<script>
+  const randomIntegerInclusive = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  const coin = p => Math.random() < p
+
+  const settings = {
+    paths : [
+      'files/if-you-please-1.jpg',
+      'files/if-you-please-2.jpg',
+      'files/if-you-please-3.jpg',
+    ],
+
+    layers : 12,
+  };
+
+  settings.images = Array.from({length: settings.layers}, (_, i) => {
+    const img = document.createElement('img');
+    document.body.appendChild(img);
+    img.src = settings.paths[i % settings.paths.length];
+
+    img.onload = () => {
+      const setPosition = axis => {
+        const property = axis ? 'left' : 'top';
+        const ratio    = axis ? img.width / window.innerWidth : img.height / window.innerHeight;
+
+        const origin = img.style[property].slice(0, -1);
+        const destination = randomIntegerInclusive(-100 * ratio, 100);
+        img.style[property] = destination + '%';
+
+        return Math.abs(destination - origin);
+      }
+
+      const move = () => {
+        const distance = setPosition(coin(0.5));
+        const delay = distance * 50;
+        img.style.transitionDuration = delay / 1000 + 's';
+        setTimeout(move, delay);
+      }
+
+      setPosition(true);
+      setPosition(false);
+      move();
+
+      img.style.visibility = 'visible';
+    }
+
+    return img;
+  });
+</script>
+
+</html>
