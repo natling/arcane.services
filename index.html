@@ -43,23 +43,21 @@
 
   const coin = p => Math.random() < p
 
-  const settings = {
-    paths : [
-      'if-you-please-1.jpg',
-      'if-you-please-2.jpg',
-      'if-you-please-3.jpg',
-      'immolation-1.jpg',
-      'immolation-2.jpg',
-      'j-train-blues.jpg',
-    ].map(file => 'files/' + file),
+  const paths = [
+    'if-you-please-1.jpg',
+    'if-you-please-2.jpg',
+    'if-you-please-3.jpg',
+    'immolation-1.jpg',
+    'immolation-2.jpg',
+    'j-train-blues.jpg',
+  ].map(file => 'files/' + file);
 
-    layers : 12,
-  };
+  const layers = 12;
 
-  settings.images = Array.from({length: settings.layers}, (_, i) => {
+  for (let i = 0; i < layers; i++) {
     const img = document.createElement('img');
     document.body.appendChild(img);
-    img.src = settings.paths[i % settings.paths.length];
+    img.src = paths[i % paths.length];
 
     img.onload = () => {
       const setPosition = axis => {
@@ -86,9 +84,7 @@
 
       img.style.visibility = 'visible';
     }
-
-    return img;
-  });
+  }
 </script>
 
 </html>
